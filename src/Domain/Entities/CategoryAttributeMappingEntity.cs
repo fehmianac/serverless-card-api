@@ -11,6 +11,7 @@ public class CategoryAttributeMappingEntity : IEntity
 
     [JsonPropertyName("attributeId")] public string AttributeId { get; set; } = default!;
     [JsonPropertyName("categoryId")] public string CategoryId { get; set; } = default!;
+    [JsonPropertyName("page")] public int Page { get; set; }
     [JsonPropertyName("defaultValues")] public List<AttributeValueModel> DefaultValues { get; set; } = new();
     [JsonPropertyName("isFilterable")] public bool IsFilterable { get; set; }
     [JsonPropertyName("isSingleSelection")] public bool IsSingleSelection { get; set; }

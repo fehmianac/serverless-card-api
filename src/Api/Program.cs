@@ -18,12 +18,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-builder.Services.AddScoped<IApiContext, ApiContext>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.CustomSchemaIds(x => x.FullName.CustomSchemaId(x.Namespace));
+});
 
 builder.Services.AddAWSService<IAmazonDynamoDB>();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
@@ -32,8 +34,8 @@ builder.Services.AddDefaultAWSOptions(new AWSOptions
     Profile = "serverless",
     Region = RegionEndpoint.EUCentral1
 });
-
 builder.Services.AddScoped<IApiContext, ApiContext>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
 
 var app = builder.Build();

@@ -17,4 +17,28 @@ public class AttributeRepository : DynamoRepository, IAttributeRepository
     {
         return await SaveAsync(attribute, cancellationToken);
     }
+
+    public async Task<List<AttributeEntity>> GetAttributesByIdsAsync(List<string> ids, CancellationToken cancellationToken)
+    {
+        return await BatchGetAsync(ids.Select(q => new AttributeEntity
+        {
+            Id = q
+        }).ToList(), cancellationToken);
+    }
+
+    public async Task<AttributeEntity?> GetAttributeAsync(string id, CancellationToken cancellationToken)
+    {
+        return await GetAsync<AttributeEntity>("attributes", id, cancellationToken);
+    }
+
+    public async Task DeleteAttributeAsync(string id, CancellationToken cancellationToken)
+    {
+        await DeleteAsync("attributes", id, cancellationToken);
+    }
+
+    public async Task<(List<AttributeEntity> result, string token)> GetAttributesAsync(string? nextToken, int limit, CancellationToken cancellationToken)
+    {
+        var (result, token, _) = await GetPagedAsync<AttributeEntity>("attributes", nextToken, limit, cancellationToken);
+        return (result, token);
+    }
 }

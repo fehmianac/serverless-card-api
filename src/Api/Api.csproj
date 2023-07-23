@@ -18,4 +18,8 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Endpoints\V1\Category\Card\" />
+    </ItemGroup>
 </Project>

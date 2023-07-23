@@ -11,9 +11,9 @@ public class Post : IEndpoint
         return Results.Ok();
     }
 
-    public void MapEndpoint(IEndpointRouteBuilder endpoints)
+    public RouteHandlerBuilder MapEndpoint(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/api/v1/card", Handler);
+        return endpoints.MapPost("/api/v1/card", Handler);
     }
 }
 

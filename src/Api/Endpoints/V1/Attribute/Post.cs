@@ -1,3 +1,4 @@
+using Api.Endpoints.V1.Model.Attribute;
 using Api.Infrastructure.Contract;
 using Domain.Entities;
 using Domain.Entities.Shared;
@@ -8,79 +9,33 @@ namespace Api.Endpoints.V1.Attribute;
 
 public class Post : IEndpoint
 {
-    private async Task<IResult> Handler(
-        [FromBody] AttributeEntity request,
+    private static async Task<IResult> Handler(
+        [FromBody] AttributeSaveRequestModel request,
         [FromServices] IAttributeRepository attributeRepository,
         CancellationToken cancellationToken)
     {
-        await attributeRepository.SaveAttributeAsync(new AttributeEntity
+        var attributeEntity = new AttributeEntity
         {
             Id = Guid.NewGuid().ToString("N"),
-            Type = AttributeType.String,
-            DefaultValues = new List<AttributeValueModel>
+            Items = request.Items.Select(q => new AttributeEntity.AttributeItemModel
             {
-                new AttributeValueModel
-                {
-                    StringValue = "Default value"
-                }
-            },
-            Translations = new List<TranslationModel>
-            {
-                new TranslationModel
-                {
-                    Culture = "tr-TR",
-                    Label = "Kullanıcı Adı"
-                }
-            },
-            SystemName = "UserName"
-        }, cancellationToken);
+                Id = q.Id ?? Guid.NewGuid().ToString("N"),
+                ItemValue = q.ItemValue
+            }).ToList(),
+            Translations = request.Translations,
+            Type = request.Type,
+            SystemName = request.SystemName
+        };
 
-        await attributeRepository.SaveAttributeAsync(new AttributeEntity
-        {
-            Id = Guid.NewGuid().ToString("N"),
-            Type = AttributeType.Price,
-            DefaultValues = new List<AttributeValueModel>
-            {
-                new AttributeValueModel
-                {
-                    PriceValue = new AttributeValueModel.AttributeValuePriceModel
-                    {
-                        Currency = "TRY",
-                        Price = 100.99
-                    }
-                }
-            },
-            Translations = new List<TranslationModel>
-            {
-                new TranslationModel
-                {
-                    Culture = "tr-TR",
-                    Label = "Kira"
-                }
-            },
-            SystemName = "Rent"
-        }, cancellationToken);
-        
-        await attributeRepository.SaveAttributeAsync(new AttributeEntity
-        {
-            Id = Guid.NewGuid().ToString("N"),
-            Type = AttributeType.Location,
-            DefaultValues = new List<AttributeValueModel>(),
-            Translations = new List<TranslationModel>
-            {
-                new TranslationModel
-                {
-                    Culture = "tr-TR",
-                    Label = "Konum"
-                }
-            },
-            SystemName = "Location"
-        }, cancellationToken);
-        return Results.Ok();
+        await attributeRepository.SaveAttributeAsync(attributeEntity, cancellationToken);
+
+        return Results.Created("/api/v1/attribute", attributeEntity.Id);
     }
 
-    public void MapEndpoint(IEndpointRouteBuilder endpoints)
+    public RouteHandlerBuilder MapEndpoint(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("v1/attribute", Handler);
+        return endpoints.MapPost("/api/v1/attribute", Handler)
+            .Produces(StatusCodes.Status201Created)
+            .WithTags("Attribute");
     }
 }

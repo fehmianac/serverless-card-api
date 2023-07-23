@@ -2,5 +2,5 @@ namespace Api.Infrastructure.Contract;
 
 public interface IEndpoint
 {
-    void MapEndpoint(IEndpointRouteBuilder endpoints);
+    RouteHandlerBuilder MapEndpoint(IEndpointRouteBuilder endpoints);
 }
