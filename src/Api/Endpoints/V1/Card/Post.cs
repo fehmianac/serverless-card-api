@@ -1,31 +1,47 @@
-using System.Text.Json;
+using Api.Endpoints.V1.Model.Card;
+using Api.Infrastructure.Context;
 using Api.Infrastructure.Contract;
+using Domain.Entities;
+using Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.V1.Card;
 
 public class Post : IEndpoint
 {
-    private static async Task<IResult> Handler([FromBody] CardPostRequest request, CancellationToken cancellationToken)
+    private static async Task<IResult> Handler(
+        [FromBody] CardSaveRequestModel request,
+        [FromServices] IApiContext apiContext,
+        [FromServices] ICardRepository cardRepository,
+        CancellationToken cancellationToken)
     {
-        return Results.Ok();
+        //TODO validate,
+
+        var card = new CardEntity
+        {
+            CategoryId = request.CategoryId,
+            Id = Guid.NewGuid().ToString("N"),
+            UserId = apiContext.CurrentUserId,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        foreach (var attributeItem in request.Items)
+        {
+            card.Attributes.Add(new CardEntity.CardAttributeMappingModel
+            {
+                AttributeId = attributeItem.AttributeId,
+                Values = attributeItem.Values
+            });
+        }
+
+        await cardRepository.CardSaveAsync(card, cancellationToken);
+
+        return Results.Created($"/api/v1/card/{card.Id}", card);
     }
 
     public RouteHandlerBuilder MapEndpoint(IEndpointRouteBuilder endpoints)
     {
-        return endpoints.MapPost("/api/v1/card", Handler);
+        return endpoints.MapPost("/api/v1/card", Handler).Produces(StatusCodes.Status201Created).WithTags("Card");
     }
-}
-
-public class CardPostRequest
-{
-    public string CategoryId { get; set; } = default!;
-    public List<AttributeItem> AttributeItems { get; set; }
-
-    public class AttributeItem
-    {
-        public string AttributeId { get; set; }
-        public JsonElement Value { get; set; }
-    }
-    //public Dictionary<string, JsonElement> Attributes { get; set; } = new Dictionary<string, JsonElement>();
 }

@@ -5,6 +5,7 @@ namespace Domain.Entities.Shared;
 public class AttributeValueModel
 {
     [JsonPropertyName("itemIds")] public List<string>? ItemIds { get; set; }
+    
     [JsonPropertyName("stringValue")] public List<TranslationModel>? StringValue { get; set; }
     [JsonPropertyName("numericValue")] public decimal? NumericValue { get; set; }
 

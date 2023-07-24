@@ -18,7 +18,7 @@ public class CardEntity : IEntity
     public class CardAttributeMappingModel
     {
         [JsonPropertyName("attributeId")] public string AttributeId { get; set; } = default!;
-        [JsonPropertyName("attributeItemId")] public string? AttributeItemId { get; set; }
+        
         [JsonPropertyName("values")] public List<AttributeValueModel> Values { get; set; } = new();
     }
 }
