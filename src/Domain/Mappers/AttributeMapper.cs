@@ -13,7 +13,8 @@ public static class AttributeMapper
             Items = entity.Items.Select(q => new AttributeDto.AttributeItemModel
             {
                 Id = q.Id,
-                ItemValue = q.ItemValue
+                ItemValue = q.ItemValue,
+                Icon = q.Icon
             }).ToList(),
             Translations = entity.Translations,
             Type = entity.Type,

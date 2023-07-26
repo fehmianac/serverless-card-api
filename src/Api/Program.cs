@@ -5,9 +5,12 @@ using Amazon.Extensions.NETCore.Setup;
 using Api.Extensions;
 using Api.Infrastructure.Context;
 using Domain.Repositories;
+using Domain.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
+using Nest;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,10 +25,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.CustomSchemaIds(x => x.FullName.CustomSchemaId(x.Namespace));
-});
+builder.Services.AddSwaggerGen(c => { c.CustomSchemaIds(x => x.FullName.CustomSchemaId(x.Namespace)); });
 
 builder.Services.AddAWSService<IAmazonDynamoDB>();
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
@@ -37,6 +37,17 @@ builder.Services.AddDefaultAWSOptions(new AWSOptions
 builder.Services.AddScoped<IApiContext, ApiContext>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAttributeRepository, AttributeRepository>();
+builder.Services.AddScoped<ICardRepository, CardRepository>();
+builder.Services.AddScoped<ISearchService, SearchService>();
+
+var node = new Uri("https://localhost:9200");
+var settings = new ConnectionSettings(node);
+settings.BasicAuthentication("admin", "admin");
+settings.ServerCertificateValidationCallback((o, certificate, arg3, arg4) => true);
+settings.DefaultFieldNameInferrer(p => p);
+
+var elasticClient = new ElasticClient(settings);
+builder.Services.AddSingleton<IElasticClient>(elasticClient);
 
 var app = builder.Build();
 

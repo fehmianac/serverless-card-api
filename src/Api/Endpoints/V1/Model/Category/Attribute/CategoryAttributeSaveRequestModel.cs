@@ -9,6 +9,9 @@ public class CategoryAttributeSaveRequestModel
     public bool IsFilterable { get; set; }
     public bool IsSingleSelection { get; set; }
     public bool IsRequired { get; set; }
+    public bool ShowOnListing { get; set; }
+    public string? ListingPosition { get; set; }
+    public string? DetailPosition { get; set; }
     public int Rank { get; set; }
     public int Page { get; set; }
 }

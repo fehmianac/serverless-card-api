@@ -20,6 +20,7 @@ public class Post : IEndpoint
             Items = request.Items.Select(q => new AttributeEntity.AttributeItemModel
             {
                 Id = q.Id ?? Guid.NewGuid().ToString("N"),
+                Icon = q.Icon,
                 ItemValue = q.ItemValue
             }).ToList(),
             Translations = request.Translations,

@@ -35,7 +35,10 @@ public static class CategoryMapper
             DefaultValues = entity.DefaultValues,
             IsFilterable = entity.IsFilterable,
             IsRequired = entity.IsRequired,
-            IsSingleSelection = entity.IsSingleSelection
+            IsSingleSelection = entity.IsSingleSelection,
+            DetailPosition = entity.DetailPosition,
+            ListingPosition = entity.ListingPosition,
+            ShowOnListing = entity.ShowOnListing
         };
     }
 }

@@ -14,5 +14,6 @@ public class AttributeSaveRequestModel
     {
         public string? Id { get; set; } = default!;
         public AttributeValueModel ItemValue { get; set; } = default!;
+        public string? Icon { get; set; }
     }
 }

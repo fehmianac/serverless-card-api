@@ -17,6 +17,8 @@ public class AttributeEntity : IEntity
     public class AttributeItemModel
     {
         [JsonPropertyName("id")] public string Id { get; set; } = default!;
+        
+        [JsonPropertyName("icon")] public string? Icon { get; set; }
         [JsonPropertyName("itemValue")] public AttributeValueModel ItemValue { get; set; } = default!;
     }
 }

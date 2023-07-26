@@ -24,7 +24,10 @@ public class Put : IEndpoint
             CategoryId = categoryId,
             DefaultValues = request.DefaultValues,
             IsFilterable = request.IsFilterable,
-            IsSingleSelection = request.IsSingleSelection
+            IsSingleSelection = request.IsSingleSelection,
+            DetailPosition = request.DetailPosition,
+            ListingPosition = request.ListingPosition,
+            ShowOnListing = request.ShowOnListing
         };
         await categoryRepository.SaveCategoryAttributeAsync(entity, cancellationToken);
         return isExist ? Results.Ok() : Results.Created("/api/v1/category/{categoryId}/attribute/{attributeId}", new {entity.CategoryId, entity.AttributeId});

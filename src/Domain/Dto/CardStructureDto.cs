@@ -16,7 +16,6 @@ public class CardStructureDto
         public string? Placeholder { get; set; }
         public string? Description { get; set; }
         public string? Hint { get; set; }
-
         public AttributeType Type { get; set; }
         public int Page { get; set; }
         public List<AttributeValueModel> DefaultValues { get; set; } = new();
@@ -29,5 +28,6 @@ public class CardStructureDto
     {
         public string Id { get; set; } = default!;
         public AttributeValueModel ItemValue { get; set; } = default!;
+        public string? Icon { get; set; }
     }
 }

@@ -60,7 +60,8 @@ public class Get : IEndpoint
                     attributeItems.Add(new CardStructureDto.AttributeItemModel
                     {
                         Id = attributeItem.Id,
-                        ItemValue = attributeItem.ItemValue
+                        ItemValue = attributeItem.ItemValue,
+                        Icon = attributeItem.Icon
                     });
                 }
             }
@@ -78,7 +79,8 @@ public class Get : IEndpoint
                 DefaultValues = categoryAttribute.DefaultValues,
                 Rank = categoryAttribute.Rank,
                 IsRequired = categoryAttribute.IsRequired,
-                IsSingleSelection = categoryAttribute.IsSingleSelection
+                IsSingleSelection = categoryAttribute.IsSingleSelection,
+                
             });
         }
 

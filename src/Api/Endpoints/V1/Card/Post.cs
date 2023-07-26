@@ -37,7 +37,7 @@ public class Post : IEndpoint
 
         await cardRepository.CardSaveAsync(card, cancellationToken);
 
-        return Results.Created($"/api/v1/card/{card.Id}", card);
+        return Results.Created($"/api/v1/card/{card.Id}", card.Id);
     }
 
     public RouteHandlerBuilder MapEndpoint(IEndpointRouteBuilder endpoints)

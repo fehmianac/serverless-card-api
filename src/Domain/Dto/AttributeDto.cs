@@ -15,5 +15,9 @@ public class AttributeDto
     {
         public string Id { get; set; } = default!;
         public AttributeValueModel ItemValue { get; set; } = default!;
+        public string? Icon { get; set; }
+
+        public string? DetailPosition { get; set; }
+        public string? ListingPosition { get; set; }
     }
 }
