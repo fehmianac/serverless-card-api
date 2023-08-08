@@ -8,9 +8,8 @@ public class CardIndexModel
 
     [Keyword(Name = "categoryId")] public string CategoryId { get; set; } = default!;
 
-    [Keyword(Name = "categoryName")] public string CategoryName { get; set; } = default!;
 
-    [Nested(Name = "attributes")] public List<CardIndexAttributeModel> Attributes { get; set; } = new();
+    [Nested(Name = "attributes")] public CardIndexAttributeModel Attributes { get; set; } = new();
 
     public class CardIndexAttributeModel
     {
@@ -36,13 +35,13 @@ public class CardIndexModel
 
     public class NumericAttributeItemModel : CardIndexAttributeBaseItemModel
     {
-        [Number(Name = "value")] public decimal Value { get; set; }
+        [Number(Name = "value")] public double Value { get; set; }
     }
 
     public class NumericRangeAttributeItemModel : CardIndexAttributeBaseItemModel
     {
-        [Number(Name = "min")] public decimal Min { get; set; }
-        [Number(Name = "max")] public decimal Max { get; set; }
+        [Number(Name = "min")] public double Min { get; set; }
+        [Number(Name = "max")] public double Max { get; set; }
     }
 
     public class BooleanAttributeItemModel : CardIndexAttributeBaseItemModel

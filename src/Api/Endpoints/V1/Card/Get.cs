@@ -3,6 +3,7 @@ using Api.Infrastructure.Contract;
 using Domain.Dto;
 using Domain.Mappers;
 using Domain.Repositories;
+using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints.V1.Card;
@@ -14,6 +15,7 @@ public class Get : IEndpoint
         [FromServices] ICardRepository cardRepository,
         [FromServices] ICategoryRepository categoryRepository,
         [FromServices] IAttributeRepository attributeRepository,
+        [FromServices] ISearchService searchService,
         CancellationToken cancellationToken)
     {
         var card = await cardRepository.GetCardAsync(id, cancellationToken);
@@ -60,7 +62,7 @@ public class Get : IEndpoint
             });
         }
 
-
+        await searchService.IndexCardAsync(card.Id, cancellationToken);
         return Results.Ok(response);
     }
 
